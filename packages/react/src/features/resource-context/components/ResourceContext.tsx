@@ -21,7 +21,7 @@ export const StructuraRouteProvider = ({
   );
 };
 
-export const useResourceContext = (): TResourceContext => {
+export const useResource = (): TResourceContext => {
   const context = use(ResourceContext);
   if (!context)
     throw new Error(
