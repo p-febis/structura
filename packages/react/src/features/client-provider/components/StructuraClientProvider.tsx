@@ -1,4 +1,4 @@
-import type { StructuraClient } from "core";
+import type { StructuraClient } from "@structura/core";
 import { createContext, use } from "react";
 
 type TStructuraClientContext = {

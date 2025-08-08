@@ -2,7 +2,7 @@ import type React from "react";
 import { SWRConfig } from "swr";
 import { vi } from "vitest";
 import { StructuraClientProvider } from "../client-provider/components/StructuraClientProvider.js";
-import { StructuraClient } from "core";
+import { StructuraClient } from "@structura/core";
 import "@testing-library/jest-dom/vitest";
 import { StructuraRouteProvider, type TResourceContext } from "../resource-context/components/ResourceContext.js";
 

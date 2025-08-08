@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { useResource } from "../../resource-context/components/ResourceContext";
 import { useStructuraClient } from "../../client-provider/components/StructuraClientProvider";
-import type { GetParams } from "core";
+import type { GetParams } from "@structura/core";
 
 export const useOne = <T>(parameters?: GetParams) => {
   const currentResource = useResource();

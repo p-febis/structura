@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { useStructuraClient } from "../../client-provider/components/StructuraClientProvider";
 import { useResource } from "../../resource-context/components/ResourceContext";
-import type { ListParams } from "core";
+import type { ListParams } from "@structura/core";
 
 export const useList = <T>(parameters?: ListParams) => {
   const { resource: currentResource } = useResource();
