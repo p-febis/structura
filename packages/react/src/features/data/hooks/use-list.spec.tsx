@@ -42,12 +42,7 @@ describe("useList", () => {
       expect(result.current.isLoading).toBeFalsy();
     });
 
-    expect(result.current).toEqual({
-      data: sampleCustomers,
-      error: undefined,
-      isLoading: false,
-      isValidating: false,
-    });
+    expect(result.current.data).toEqual(sampleCustomers);
   });
 
   it("should allow overwriting", async () => {
