@@ -16,6 +16,8 @@ import { DashboardPage } from "./routes/dashboard";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductsPage } from "./routes/dashboard/products";
 import { UsersPage } from "./routes/dashboard/users";
+import { ProductCreatePage } from "./routes/dashboard/products-create";
+import { CartsPage } from "./routes/dashboard/carts";
 
 const ResourceProvider = ({ children }: PropsWithChildren) => {
   const location = useLocation();
@@ -45,8 +47,9 @@ const App = () => {
             <Route path="dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardPage />} />
               <Route path="products" element={<ProductsPage />} />
+              <Route path="products/create" element={<ProductCreatePage/>} />
               <Route path="users" element={<UsersPage />} />
-              <Route path="cart" element={4} />
+              <Route path="cart" element={<CartsPage />} />
             </Route>
           </Routes>
         </ResourceProvider>
