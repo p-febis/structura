@@ -29,10 +29,6 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "role",
     header: "Role",
   },
-  {
-    accessorKey: "age",
-    header: "Age",
-  },
 ];
 
 export const UsersPage = () => {
