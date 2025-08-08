@@ -1,6 +1,6 @@
 import { createContext, use } from "react";
 
-type TResourceContext = {
+export type TResourceContext = {
   resource: string;
   id: string | null;
 };
@@ -27,5 +27,11 @@ export const useResource = (): TResourceContext => {
     throw new Error(
       "useResourceContext must be used within StructuraRouteProvider",
     );
+
+  if (!context.resource)
+    throw new Error(
+      "useResource cannot be called without at least a resource set",
+    );
+
   return context;
 };
