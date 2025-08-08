@@ -10,7 +10,10 @@ import {
 import { RestApiDataProvider } from "./provider";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
-import { DataProvider } from "@structura/core";
+import type { DataProvider } from "@structura/core";
+
+let interceptedBodies: any[] = [];
+let didDelete = false;
 
 const server = setupServer(
   ...[
@@ -32,12 +35,36 @@ const server = setupServer(
         name: "Scuba tank",
       });
     }),
+    http.post("https://example.com/products", async ({ request }) => {
+      interceptedBodies.push(await request.json());
+
+      return HttpResponse.json({
+        id: 1,
+        name: "Scuba tank",
+      });
+    }),
+    http.patch("https://example.com/products/1", async ({ request }) => {
+      interceptedBodies.push(await request.json());
+
+      return HttpResponse.json({
+        id: 1,
+        name: "Scuba tank",
+      });
+    }),
+    http.delete("https://example.com/products/1", async () => {
+      didDelete = true;
+      return HttpResponse.json({});
+    }),
   ],
 );
 
 describe("Structura REST API DataProvider", () => {
   beforeAll(() => server.listen());
-  afterEach(() => server.resetHandlers());
+  afterEach(() => {
+    server.resetHandlers();
+    interceptedBodies = [];
+    didDelete = false;
+  });
   afterAll(() => server.close());
 
   let dataProvider: DataProvider;
@@ -80,5 +107,52 @@ describe("Structura REST API DataProvider", () => {
       id: 1,
       name: "Scuba tank",
     });
+  });
+
+  it("should implement createOne", async () => {
+    const result = await dataProvider.createOne<
+      { id: number; name: string },
+      { name: string }
+    >({
+      resource: "products",
+      data: {
+        name: "Dive watch",
+      },
+    });
+
+    expect(interceptedBodies[0]).toEqual({
+      name: "Dive watch",
+    });
+
+    expect(result).toEqual({
+      id: 1,
+      name: "Scuba tank",
+    });
+  });
+
+  it("should implement updateOne", async () => {
+    const result = await dataProvider.updateOne<
+      { id: number; name: string },
+      { name: string }
+    >({
+      resource: "products",
+      id: 1,
+      data: {
+        name: "Dive watch",
+      },
+    });
+
+    expect(interceptedBodies[0]).toEqual({
+      name: "Dive watch",
+    });
+  });
+
+  it("should implement deleteOne", async () => {
+    await dataProvider.deleteOne({
+      resource: "products",
+      id: 1,
+    });
+
+    expect(didDelete).toBeTruthy();
   });
 });
