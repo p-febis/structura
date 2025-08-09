@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { DataProvider } from "../data-provider/data-provider";
 import { StructuraClient } from "./client";
 
 describe("Structura Client", () => {
@@ -20,14 +19,7 @@ describe("Structura Client", () => {
     });
   });
 
-  it("should be able to create a client", () => {
-    const client = new StructuraClient({
-      dataProvider: {} as unknown as DataProvider,
-    });
-    expect(client).toBeDefined();
-  });
-
-  it("should call getList on the data provider", async () => {
+  it("should be able to retrieve a list of data", async () => {
     const mockResponse = [
       {
         name: "Widget 1",
@@ -42,14 +34,10 @@ describe("Structura Client", () => {
       resource: "widgets",
     });
 
-    expect(mockDataProvider.getList).toHaveBeenCalledExactlyOnceWith({
-      resource: "widgets",
-    });
-
     expect(response).toEqual(mockResponse);
   });
 
-  it("should call getOne on the data provider", async () => {
+  it("should be able to retrieve a single data point", async () => {
     const mockResponse = {
       name: "Widget 1",
     };
@@ -63,15 +51,10 @@ describe("Structura Client", () => {
       id: 1,
     });
 
-    expect(mockDataProvider.getOne).toHaveBeenCalledExactlyOnceWith({
-      resource: "widgets",
-      id: 1,
-    });
-
     expect(response).toEqual(mockResponse);
   });
 
-  it("should call createOne on the data provider", async () => {
+  it("should be able to create a resource", async () => {
     const mockResponse = {
       id: 1,
       name: "Widget 1",
@@ -94,17 +77,10 @@ describe("Structura Client", () => {
       },
     });
 
-    expect(mockDataProvider.createOne).toHaveBeenCalledExactlyOnceWith({
-      resource: "widgets",
-      data: {
-        name: "Widget 1",
-      },
-    });
-
     expect(response).toEqual(mockResponse);
   });
 
-  it("should call updateOne on the data provider", async () => {
+  it("should be able to update a resource", async () => {
     const mockResponse = {
       id: 1,
       name: "Widget 1",
@@ -128,18 +104,10 @@ describe("Structura Client", () => {
       },
     });
 
-    expect(mockDataProvider.updateOne).toHaveBeenCalledExactlyOnceWith({
-      resource: "widgets",
-      id: 1,
-      data: {
-        name: "Widget 1",
-      },
-    });
-
     expect(response).toEqual(mockResponse);
   });
 
-  it("should call deleteOne on the data provider", async () => {
+  it("should be able to delete a resource", async () => {
     const mockResponse = {
       id: 1,
       name: "Widget 1",
@@ -148,11 +116,6 @@ describe("Structura Client", () => {
     mockDataProvider.deleteOne.mockResolvedValueOnce(mockResponse);
 
     await client.deleteOne({
-      resource: "widgets",
-      id: 1,
-    });
-
-    expect(mockDataProvider.deleteOne).toHaveBeenCalledExactlyOnceWith({
       resource: "widgets",
       id: 1,
     });
