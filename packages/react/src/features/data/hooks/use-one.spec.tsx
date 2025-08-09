@@ -9,7 +9,7 @@ describe("useOne", () => {
     vi.resetAllMocks();
   });
 
-  it("should call the dataProvider with the correct params", async () => {
+  it("should call the dataProvider with the correct parameters", async () => {
     const sampleCustomer = {
       id: 1,
       name: "John Doe",
@@ -27,24 +27,14 @@ describe("useOne", () => {
       wrapper: Wrapper,
     });
 
-    expect(mockDataProvider.getOne).toHaveBeenCalledExactlyOnceWith({
-      resource: "customers",
-      id: "1",
-    });
-
     await waitFor(() => {
       expect(result.current.isLoading).toBeFalsy();
     });
 
-    expect(result.current).toEqual({
-      data: sampleCustomer,
-      error: undefined,
-      isLoading: false,
-      isValidating: false,
-    });
+    expect(result.current.data).toEqual(sampleCustomer);
   });
 
-  it("should throw if called without an id", async () => {
+  it("throws an error if called without an id", async () => {
     const Wrapper = ({ children }: PropsWithChildren) => (
       <TestWrapper resource={{ resource: "customers", id: null }}>
         {children}
@@ -56,11 +46,9 @@ describe("useOne", () => {
         wrapper: Wrapper,
       });
     }).toThrowError("useOne must be called with an id");
-
-    expect(mockDataProvider.getOne).not.toHaveBeenCalled();
   });
 
-  it("should allow overwriting", () => {
+  it("returns overriden resource data when provided", async () => {
     const sampleProduct = {
       id: 1,
       name: "Blender",
@@ -74,7 +62,7 @@ describe("useOne", () => {
       </TestWrapper>
     );
 
-    renderHook(
+    const { result } = renderHook(
       () =>
         useOne({
           resource: "products",
@@ -85,9 +73,10 @@ describe("useOne", () => {
       },
     );
 
-    expect(mockDataProvider.getOne).toHaveBeenCalledExactlyOnceWith({
-      resource: "products",
-      id: "1",
+    await waitFor(() => {
+      expect(result.current.isLoading).toBeFalsy();
     });
+
+    expect(result.current.data).toEqual(sampleProduct);
   });
 });

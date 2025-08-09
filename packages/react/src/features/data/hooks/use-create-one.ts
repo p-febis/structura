@@ -1,9 +1,8 @@
-import type { CreateParams } from "@structura/core";
 import useSWRMutation from "swr/mutation";
 import { useResource } from "../../resource-context/components/ResourceContext";
 import { useStructuraClient } from "../../client-provider/components/StructuraClientProvider";
 
-export const useCreateOne = <T, K>(parameters?: CreateParams<K>) => {
+export const useCreateOne = <T, K>(parameters?: { resource: string }) => {
   const currentResource = useResource();
   const { client } = useStructuraClient();
   const { resource: usedResource } = parameters ?? currentResource;

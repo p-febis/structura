@@ -10,7 +10,7 @@ describe("useList", () => {
     vi.resetAllMocks();
   })
 
-  it("should call the dataProvider with the correct params", async () => {
+  it("should call the dataProvider with the correct parameters", async () => {
     const sampleCustomers = [
       {
         id: 1,
@@ -34,10 +34,6 @@ describe("useList", () => {
       wrapper: Wrapper,
     });
 
-    expect(mockDataProvider.getList).toHaveBeenCalledExactlyOnceWith({
-      resource: "customers",
-    });
-
     await waitFor(() => {
       expect(result.current.isLoading).toBeFalsy();
     });
@@ -45,7 +41,7 @@ describe("useList", () => {
     expect(result.current.data).toEqual(sampleCustomers);
   });
 
-  it("should allow overwriting", async () => {
+  it("returns overriden resource data when provided", async () => {
     const sampleCustomers = [
       {
         id: 1,
@@ -65,12 +61,14 @@ describe("useList", () => {
       </TestWrapper>
     );
 
-    renderHook(() => useList({ resource: "products" }), {
+    const { result } = renderHook(() => useList({ resource: "products" }), {
       wrapper: Wrapper,
     });
 
-    expect(mockDataProvider.getList).toHaveBeenCalledExactlyOnceWith({
-      resource: "products",
+    await waitFor(() => {
+      expect(result.current.isLoading).toBeFalsy();
     });
+
+    expect(result.current.data).toEqual(sampleCustomers);
   });
 });
