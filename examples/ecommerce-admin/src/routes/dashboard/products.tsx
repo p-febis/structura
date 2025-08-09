@@ -5,6 +5,18 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<Product>[] = [
   {
+    accessorKey: "image",
+    header: "Image",
+    cell: ({ getValue }) => (
+      <img
+        src={getValue<string>()}
+        width={50}
+        height={50}
+        className="rounded-md object-cover mx-auto"
+      />
+    ),
+  },
+  {
     accessorKey: "title",
     header: "Title",
   },
@@ -17,39 +29,10 @@ export const columns: ColumnDef<Product>[] = [
     header: "Price",
     cell: ({ getValue }) => `$${getValue<number>().toFixed(2)}`,
   },
-  {
-    accessorKey: "stock",
-    header: "Stock",
-  },
-  {
-    accessorKey: "rating",
-    header: "Rating",
-    cell: ({ getValue }) => {
-      const rating = getValue<number>();
-      const maxStars = 5;
-      return (
-        <div style={{ display: "flex", gap: 2 }}>
-          {Array.from({ length: maxStars }).map((_, i) => (
-            <span
-              key={i}
-              style={{ color: i < Math.round(rating) ? "gold" : "#ccc" }}
-            >
-              ★
-            </span>
-          ))}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "brand",
-    header: "Brand",
-  },
 ];
 
 export const ProductsPage = () => {
-  const { data, isLoading } = useList<{ products: Product[] }>();
-  const products = data?.products;
+  const { data: products, isLoading } = useList<Product[]>();
 
   if (isLoading || !products) {
     return "Loading...";
