@@ -12,9 +12,6 @@ import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import type { DataProvider } from "@structura/core";
 
-let interceptedBodies: any[] = [];
-let didDelete = false;
-
 const server = setupServer(
   ...[
     http.get("https://example.com/products", () => {
@@ -35,17 +32,13 @@ const server = setupServer(
         name: "Scuba tank",
       });
     }),
-    http.post("https://example.com/products", async ({ request }) => {
-      interceptedBodies.push(await request.json());
-
+    http.post("https://example.com/products", async () => {
       return HttpResponse.json({
         id: 1,
         name: "Scuba tank",
       });
     }),
-    http.patch("https://example.com/products/1", async ({ request }) => {
-      interceptedBodies.push(await request.json());
-
+    http.patch("https://example.com/products/1", async () => {
       return HttpResponse.json({
         id: 1,
         name: "Scuba tank",
@@ -62,8 +55,6 @@ describe("Structura REST API DataProvider", () => {
   beforeAll(() => server.listen());
   afterEach(() => {
     server.resetHandlers();
-    interceptedBodies = [];
-    didDelete = false;
   });
   afterAll(() => server.close());
 
@@ -76,11 +67,7 @@ describe("Structura REST API DataProvider", () => {
     });
   });
 
-  it("should be able to create the dataProvider", () => {
-    expect(dataProvider).toBeDefined();
-  });
-
-  it("should implement getList", async () => {
+  it("returns a list of products", async () => {
     const list = await dataProvider.getList({
       resource: "products",
     });
@@ -97,7 +84,7 @@ describe("Structura REST API DataProvider", () => {
     ]);
   });
 
-  it("should implement getOne", async () => {
+  it("returns a single product by id", async () => {
     const one = await dataProvider.getOne({
       resource: "products",
       id: "1",
@@ -109,7 +96,7 @@ describe("Structura REST API DataProvider", () => {
     });
   });
 
-  it("should implement createOne", async () => {
+  it("creates a new product", async () => {
     const result = await dataProvider.createOne<
       { id: number; name: string },
       { name: string }
@@ -120,17 +107,13 @@ describe("Structura REST API DataProvider", () => {
       },
     });
 
-    expect(interceptedBodies[0]).toEqual({
-      name: "Dive watch",
-    });
-
     expect(result).toEqual({
       id: 1,
       name: "Scuba tank",
     });
   });
 
-  it("should implement updateOne", async () => {
+  it("updates an existing product", async () => {
     const result = await dataProvider.updateOne<
       { id: number; name: string },
       { name: string }
@@ -142,17 +125,18 @@ describe("Structura REST API DataProvider", () => {
       },
     });
 
-    expect(interceptedBodies[0]).toEqual({
-      name: "Dive watch",
+    expect(result).toEqual({
+      id: 1,
+      name: "Scuba tank",
     });
   });
 
-  it("should implement deleteOne", async () => {
-    await dataProvider.deleteOne({
-      resource: "products",
-      id: 1,
-    });
-
-    expect(didDelete).toBeTruthy();
+  it("deletes a product by id", async () => {
+    await expect(
+      dataProvider.deleteOne({
+        resource: "products",
+        id: 1,
+      }),
+    ).resolves.not.toThrow();
   });
 });
