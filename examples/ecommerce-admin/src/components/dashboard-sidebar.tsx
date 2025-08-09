@@ -7,7 +7,7 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-SidebarMenuItem,
+  SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { Home, Package, ShoppingCart, Users } from "lucide-react";
@@ -30,19 +30,18 @@ const navigation = [
     icon: Users,
   },
   {
-    title: "Cart",
-    url: "/dashboard/cart",
+    title: "Carts",
+    url: "/dashboard/carts",
     icon: ShoppingCart,
   },
 ];
 
 export const DashboardSidebar = () => {
-
   return (
     <Sidebar>
       <SidebarHeader />
       <SidebarContent>
-      <SidebarGroup>
+        <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

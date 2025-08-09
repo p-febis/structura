@@ -40,7 +40,7 @@ export const UsersPage = () => {
   }
 
   return (
-    <main className="px-4 w-full h-full">
+    <main className="h-full w-full px-4">
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Users</h1>
         <DataTable columns={columns} data={users} />

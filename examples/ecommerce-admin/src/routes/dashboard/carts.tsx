@@ -37,11 +37,11 @@ export const CartsPage = () => {
   }
 
   return (
-    <main className="px-4 w-full h-full">
+    <main className="h-full w-full px-4">
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Carts</h1>
         <DataTable columns={columns} data={carts} />
       </div>
     </main>
   );
-}
+};

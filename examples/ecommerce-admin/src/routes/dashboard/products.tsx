@@ -12,7 +12,7 @@ export const columns: ColumnDef<Product>[] = [
         src={getValue<string>()}
         width={50}
         height={50}
-        className="rounded-md object-cover mx-auto"
+        className="mx-auto rounded-md object-cover"
       />
     ),
   },
@@ -39,7 +39,7 @@ export const ProductsPage = () => {
   }
 
   return (
-    <main className="px-4 w-full h-full">
+    <main className="h-full w-full px-4">
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Products</h1>
         <DataTable columns={columns} data={products} />
