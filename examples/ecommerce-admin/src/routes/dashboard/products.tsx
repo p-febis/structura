@@ -8,12 +8,14 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "image",
     header: "Image",
     cell: ({ getValue }) => (
-      <img
-        src={getValue<string>()}
-        width={50}
-        height={50}
-        className="mx-auto rounded-md object-cover"
-      />
+      <div className="min-h-[50px] flex items-center justify-center">
+        <img
+          src={getValue<string>()}
+          width={50}
+          height={50}
+          className="rounded-md object-cover"
+        />
+      </div>
     ),
   },
   {

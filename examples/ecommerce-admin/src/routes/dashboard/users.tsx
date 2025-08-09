@@ -3,14 +3,18 @@ import type { User } from "@/features/users/types";
 import { useList } from "@structura/react";
 import type { ColumnDef } from "@tanstack/react-table";
 
+const capitalizeFirstLetter = (toCapitalize: string) => {
+  const [firstLetter] = toCapitalize;
+
+  return firstLetter.toUpperCase() + toCapitalize.slice(1);
+};
+
 export const columns: ColumnDef<User>[] = [
   {
-    id: "name",
+    id: "fullName",
     header: "Name",
-    cell: ({ row }) => {
-      const user = row.original;
-      return `${user.firstName} ${user.lastName}`;
-    },
+    accessorFn: (row) =>
+      `${capitalizeFirstLetter(row.name.firstname)} ${capitalizeFirstLetter(row.name.lastname)}`,
   },
   {
     accessorKey: "email",
@@ -21,19 +25,13 @@ export const columns: ColumnDef<User>[] = [
     header: "Phone",
   },
   {
-    id: "company",
-    header: "Company",
-    cell: ({ row }) => row.original.company.name,
-  },
-  {
-    accessorKey: "role",
-    header: "Role",
+    accessorKey: "username",
+    header: "Username",
   },
 ];
 
 export const UsersPage = () => {
-  const { data, isLoading } = useList<{ users: User[] }>();
-  const users = data?.users;
+  const { data: users, isLoading } = useList<User[]>();
 
   if (isLoading || !users) {
     return "Loading...";

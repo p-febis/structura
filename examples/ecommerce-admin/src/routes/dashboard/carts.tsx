@@ -11,26 +11,19 @@ const columns: ColumnDef<Cart>[] = [
   {
     accessorKey: "totalProducts",
     header: "Total Products",
+    accessorFn: (row) =>
+    `${row.products.length}`,
   },
   {
     accessorKey: "totalQuantity",
     header: "Total Quantity",
-  },
-  {
-    accessorKey: "total",
-    header: "Total Price",
-    cell: ({ getValue }) => `$${getValue<number>().toFixed(2)}`,
-  },
-  {
-    accessorKey: "discountedTotal",
-    header: "Discounted Total",
-    cell: ({ getValue }) => `$${getValue<number>().toFixed(2)}`,
+    accessorFn: (row) =>
+    `${row.products.reduce((acc, value) => acc + value.quantity, 0)}`,
   },
 ];
 
 export const CartsPage = () => {
-  const { data, isLoading } = useList<{ carts: Cart[] }>();
-  const carts = data?.carts;
+  const { data: carts, isLoading } = useList<Cart[]>();
 
   if (isLoading || !carts) {
     return "Loading...";
