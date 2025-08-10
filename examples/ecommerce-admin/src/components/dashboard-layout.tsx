@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { SidebarProvider } from "./ui/sidebar";
 import { DashboardHeader } from "./dashboard-header";
+import { Toaster } from "sonner";
 
 export const DashboardLayout = () => {
   return (
@@ -14,6 +15,7 @@ export const DashboardLayout = () => {
             <Outlet />
           </div>
         </div>
+        <Toaster richColors />
       </SidebarProvider>
     </div>
   );

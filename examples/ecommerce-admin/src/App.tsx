@@ -18,8 +18,8 @@ import { DashboardPage } from "./routes/dashboard";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductsPage } from "./routes/dashboard/products";
 import { UsersPage } from "./routes/dashboard/users";
-import { ProductCreatePage } from "./routes/dashboard/products-create";
-import { CartsPage } from "./routes/dashboard/carts";
+import { ProductCreatePage } from "./routes/dashboard/product-create";
+import { CartsPage } from "./routes/dashboard/cart";
 
 const ResourceProviderWrapper = ({ children }: PropsWithChildren) => {
   const location = useLocation();

@@ -11,14 +11,13 @@ const columns: ColumnDef<Cart>[] = [
   {
     accessorKey: "totalProducts",
     header: "Total Products",
-    accessorFn: (row) =>
-    `${row.products.length}`,
+    accessorFn: (row) => `${row.products.length}`,
   },
   {
     accessorKey: "totalQuantity",
     header: "Total Quantity",
     accessorFn: (row) =>
-    `${row.products.reduce((acc, value) => acc + value.quantity, 0)}`,
+      `${row.products.reduce((acc, value) => acc + value.quantity, 0)}`,
   },
 ];
 
