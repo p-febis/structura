@@ -21,9 +21,19 @@ describe("useCreateOne", () => {
       </TestWrapper>
     );
 
-    const { result } = renderHook(() => useCreateOne(), {
-      wrapper: Wrapper,
-    });
+    const onSuccess = vi.fn();
+
+    const { result } = renderHook(
+      () =>
+        useCreateOne({
+          mutationOptions: {
+            onSuccess,
+          },
+        }),
+      {
+        wrapper: Wrapper,
+      },
+    );
 
     const { mutate } = result.current;
 
@@ -33,12 +43,14 @@ describe("useCreateOne", () => {
 
     await waitFor(() => {
       expect(result.current.data).toBeDefined();
-    })
+    });
 
     expect(result.current.data).toEqual({
       id: 1,
       name: "John Grow",
     });
+
+    expect(onSuccess).toHaveBeenCalledOnce();
   });
 
   it("returns overriden resource data when provided", async () => {
@@ -53,11 +65,15 @@ describe("useCreateOne", () => {
       </TestWrapper>
     );
 
-    const { result } = renderHook(() => useCreateOne({
-      resource: "customers",
-    }), {
-      wrapper: Wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        useCreateOne({
+          resource: "customers",
+        }),
+      {
+        wrapper: Wrapper,
+      },
+    );
 
     const { mutate } = result.current;
 
@@ -67,11 +83,11 @@ describe("useCreateOne", () => {
 
     await waitFor(() => {
       expect(result.current.data).toBeDefined();
-    })
+    });
 
     expect(result.current.data).toEqual({
       id: 1,
       name: "John Grow",
     });
-  })
+  });
 });
