@@ -9,7 +9,7 @@ describe("useCreateOne", () => {
     vi.resetAllMocks();
   });
 
-  it("should call the dataProvider with the correct parameters", async () => {
+  it("should create a resource", async () => {
     mockDataProvider.createOne.mockResolvedValueOnce({
       id: 1,
       name: "John Grow",
